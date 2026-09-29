@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Find out how many days you've been alive. A free, private birthday calculator.">
+  <meta name="theme-color" content="#172b26">
+  <title>Days Old — Your life in days</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="card">
+    <p class="eyebrow">EVERY DAY COUNTS</p>
+    <h1>Your life,<br>in days.</h1>
+    <p class="intro">A little perspective on all the days you've lived.</p>
+
+    <form id="birthday-form" novalidate>
+      <label for="birthday">When were you born?</label>
+      <input id="birthday" name="birthday" type="date" min="0001-01-01" required aria-describedby="error">
+      <p id="error" class="error" role="alert"></p>
+      <button type="submit">Count my days <span aria-hidden="true">→</span></button>
+    </form>
+
+    <section id="result" class="result" aria-live="polite" aria-atomic="true" hidden>
+      <p>You've been here for</p>
+      <p class="day-count"><span id="days">0</span> <span class="unit">days</span></p>
+      <p id="date-range" class="date-range"></p>
+      <p class="celebration">Here's to the days ahead.</p>
+    </section>
+
+    <footer>
+      <p>Your birthday stays in your browser. Nothing is stored or sent.</p>
+      <p>Calculated in calendar days, up to today in your local time.</p>
+    </footer>
+  </main>
+</body>
+</html>
