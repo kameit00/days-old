@@ -1,9 +1,13 @@
 const form = document.getElementById('birthday-form');
-const birthday = document.getElementById('birthday');
+const birthdayDay = document.getElementById('birthday-day');
+const birthdayMonth = document.getElementById('birthday-month');
+const birthdayYear = document.getElementById('birthday-year');
+const birthdayInputs = [birthdayDay, birthdayMonth, birthdayYear];
 const error = document.getElementById('error');
 const result = document.getElementById('result');
 const days = document.getElementById('days');
 const dateRange = document.getElementById('date-range');
+const milestones = result.querySelectorAll('.milestones dd');
 const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
 // Map calendar dates to UTC midnight so daylight-saving changes don't affect the count.
@@ -18,55 +22,66 @@ function todayDate() {
   return calendarDate(now.getFullYear(), now.getMonth() + 1, now.getDate());
 }
 
-function updateMaximum() {
-  birthday.max = todayDate().toISOString().slice(0, 10);
+function clearFeedback() {
+  error.textContent = '';
+  birthdayInputs.forEach((input) => input.removeAttribute('aria-invalid'));
+  result.hidden = true;
 }
 
-function showError(message) {
+function showError(message, input) {
   error.textContent = message;
-  birthday.setAttribute('aria-invalid', 'true');
+  input.setAttribute('aria-invalid', 'true');
   result.hidden = true;
-  birthday.focus();
+  input.focus();
 }
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  updateMaximum();
+  clearFeedback();
 
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthday.value);
-  if (!match) {
-    showError('Please enter your date of birth.');
+  const dayText = birthdayDay.value.trim();
+  const monthText = birthdayMonth.value.trim();
+  const yearText = birthdayYear.value.trim();
+  const day = Number(dayText);
+  const month = Number(monthText);
+  const year = Number(yearText);
+  if (!/^\d{1,2}$/.test(dayText) || day < 1 || day > 31) {
+    showError('Please enter a day from 1 to 31.', birthdayDay);
+    return;
+  }
+  if (!/^\d{1,2}$/.test(monthText) || month < 1 || month > 12) {
+    showError('Please enter a month from 1 to 12.', birthdayMonth);
+    return;
+  }
+  if (!/^\d{4}$/.test(yearText) || year < 1 || year > 9999) {
+    showError('Please enter a four-digit year from 0001 to 9999.', birthdayYear);
     return;
   }
 
-  const [, year, month, day] = match.map(Number);
   const birthDate = calendarDate(year, month, day);
-  if (year < 1 || birthDate.toISOString().slice(0, 10) !== birthday.value) {
-    showError('Please enter a valid date of birth.');
+  if (birthDate.getUTCFullYear() !== year || birthDate.getUTCMonth() + 1 !== month || birthDate.getUTCDate() !== day) {
+    showError('Please enter a valid day for this month and year.', birthdayDay);
     return;
   }
 
   const today = todayDate();
   if (birthDate > today) {
-    showError('Your date of birth cannot be in the future.');
+    const input = year > today.getUTCFullYear() ? birthdayYear
+      : month > today.getUTCMonth() + 1 ? birthdayMonth : birthdayDay;
+    showError('Your date of birth cannot be in the future.', input);
     return;
   }
 
-  error.textContent = '';
-  birthday.removeAttribute('aria-invalid');
   days.textContent = new Intl.NumberFormat().format((today - birthDate) / millisecondsPerDay);
   const format = new Intl.DateTimeFormat(undefined, {
     year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'
   });
   dateRange.textContent = `${format.format(birthDate)} – ${format.format(today)}`;
+  milestones.forEach((milestone) => {
+    const date = new Date(birthDate.getTime() + Number(milestone.dataset.days) * millisecondsPerDay);
+    milestone.textContent = format.format(date);
+  });
   result.hidden = false;
 });
 
-birthday.addEventListener('input', () => {
-  error.textContent = '';
-  birthday.removeAttribute('aria-invalid');
-  result.hidden = true;
-});
-
-window.addEventListener('focus', updateMaximum);
-updateMaximum();
+birthdayInputs.forEach((input) => input.addEventListener('input', clearFeedback));

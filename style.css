@@ -43,7 +43,12 @@ h1 {
 }
 
 .intro { margin: 24px 0 32px; color: #59665e; line-height: 1.6; }
+fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+legend { margin-bottom: 16px; padding: 0; font-weight: 600; }
+.birthday-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 1.4fr); gap: 12px; }
+.birthday-fields input { padding: 14px 10px; }
 label { display: block; margin-bottom: 10px; font-weight: 600; }
+.hint { margin: 10px 0 0; color: #59665e; font-size: 0.875rem; }
 
 input, button {
   width: 100%;
@@ -84,6 +89,10 @@ button:hover { background: #173b2e; }
 .day-count { padding: 10px 0; font-size: clamp(2rem, 8vw, 3rem); font-weight: 750; letter-spacing: -0.04em; overflow-wrap: anywhere; }
 .unit { font-size: 1rem; font-weight: 500; letter-spacing: normal; }
 .date-range { color: #47604d; font-size: 0.875rem; line-height: 1.6; }
+.milestones { margin: 20px 0 0; font-size: 0.875rem; line-height: 1.6; }
+.milestones dt { font-weight: 600; }
+.milestones dd { margin: 4px 0 12px; color: #47604d; }
+.milestones dd:last-child { margin-bottom: 0; }
 .result .celebration { margin-top: 20px; font-size: 0.875rem; }
 footer { margin-top: 32px; color: #677268; font-size: 0.75rem; line-height: 1.6; }
 footer p { margin: 6px 0; }

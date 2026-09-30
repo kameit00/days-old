@@ -16,8 +16,24 @@
     <p class="intro">A little perspective on all the days you've lived.</p>
 
     <form id="birthday-form" novalidate>
-      <label for="birthday">When were you born?</label>
-      <input id="birthday" name="birthday" type="date" min="0001-01-01" required aria-describedby="error">
+      <fieldset>
+        <legend>When were you born?</legend>
+        <div class="birthday-fields">
+          <div>
+            <label for="birthday-day">Day</label>
+            <input id="birthday-day" name="day" type="text" inputmode="numeric" autocomplete="bday-day" maxlength="2" placeholder="DD" required aria-describedby="birthday-hint error">
+          </div>
+          <div>
+            <label for="birthday-month">Month</label>
+            <input id="birthday-month" name="month" type="text" inputmode="numeric" autocomplete="bday-month" maxlength="2" placeholder="MM" required aria-describedby="birthday-hint error">
+          </div>
+          <div>
+            <label for="birthday-year">Year</label>
+            <input id="birthday-year" name="year" type="text" inputmode="numeric" autocomplete="bday-year" maxlength="4" placeholder="YYYY" required aria-describedby="birthday-hint error">
+          </div>
+        </div>
+        <p id="birthday-hint" class="hint">Enter a four-digit year, e.g. 1942.</p>
+      </fieldset>
       <p id="error" class="error" role="alert"></p>
       <button type="submit">Count my days <span aria-hidden="true">→</span></button>
     </form>
@@ -26,6 +42,14 @@
       <p>You've been here for</p>
       <p class="day-count"><span id="days">0</span> <span class="unit">days</span></p>
       <p id="date-range" class="date-range"></p>
+      <dl class="milestones">
+        <dt>10,000 days old</dt>
+        <dd data-days="10000"></dd>
+        <dt>20,000 days old</dt>
+        <dd data-days="20000"></dd>
+        <dt>30,000 days old</dt>
+        <dd data-days="30000"></dd>
+      </dl>
       <p class="celebration">Here's to the days ahead.</p>
     </section>
 
